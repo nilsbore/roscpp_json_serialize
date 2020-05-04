@@ -36,7 +36,7 @@ TEST(JsonSerialization, navSatFix)
     msg.status.status = -1;
     std::string original_def, parsed_def;
     tie(original_def, parsed_def) = test_serialization(msg);
-    EXPECT_EQ(original_def, parsed_def);
+    EXPECT_EQ(original_def + "}", parsed_def);
 }
 
 TEST(JsonSerialization, rosmonState)
