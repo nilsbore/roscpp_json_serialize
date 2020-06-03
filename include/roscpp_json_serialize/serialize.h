@@ -25,6 +25,7 @@ private:
     size_t initial_indent;
     bool indent_needs_handling;
     bool output_service_list;
+    int m_precision;
     std::list<ParsingContext> contexts;
 
     ParsingContext& context()
@@ -109,7 +110,8 @@ private:
             stream() << "Infinity";
         }
         else {
-            stream() << value;
+            stream() << std::setprecision(m_precision) << value;
+            
         }
     }
 
@@ -126,7 +128,7 @@ private:
             stream() << "Infinity";
         }
         else {
-            stream() << value;
+            stream() << std::setprecision(m_precision) << value;
         }
     }
 
@@ -325,7 +327,7 @@ public:
         return *this;
     }
 
-    JSONStream(bool output_service_list=false) : current_indent(1), initial_indent(0), indent_needs_handling(false), output_service_list(output_service_list)
+    JSONStream(bool output_service_list=false, int precision = 6) : current_indent(1), initial_indent(0), indent_needs_handling(false), output_service_list(output_service_list), m_precision(precision)
     {
         contexts.push_back(ParsingContext());
     }
@@ -349,6 +351,14 @@ template <typename MSG>
 std::string serialize(const MSG& msg, bool output_service_list=false)
 {
     roscpp_json::JSONStream stream(output_service_list);
+    ros::message_operations::Printer<MSG>::stream(stream, "  ", msg);
+    return stream.str();
+}
+
+template <typename MSG>
+std::string serialize(const MSG& msg, int precision, bool output_service_list=false)
+{
+    roscpp_json::JSONStream stream(output_service_list, precision);
     ros::message_operations::Printer<MSG>::stream(stream, "  ", msg);
     return stream.str();
 }
