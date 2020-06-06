@@ -1,4 +1,7 @@
 # roscpp_json_serialize
+
+**NOTE** This repo is deprecated in favour of https://github.com/nilsbore/roswasm_suite
+
 Header library for off-the-shelf JSON serialization for ROS messages in C++
 
 The following example illustrates the functionality:
